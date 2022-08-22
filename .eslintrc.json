@@ -3,6 +3,7 @@
   "ignorePatterns": [
     "projects/**/*"
   ],
+  "extends": ["@bitovi/eslint-config/angular"],
   "overrides": [
     {
       "files": [
