@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { Actions, concatLatestFrom, createEffect, ofType } from '@ngrx/effects';
 import { ChatService } from './chat.service';
 import * as ChatActions from './chat.actions';
-import { concatMap, map, of } from 'rxjs';
+import { bufferTime, map, mergeMap, of } from 'rxjs';
 import { Store } from '@ngrx/store';
 import { selectUserId } from '../login/login.selectors';
 
@@ -34,7 +34,7 @@ export class ChatEffects {
   sendMessage$ = createEffect(() => {
     return this.actions$.pipe(
       ofType(ChatActions.addPendingMessage),
-      concatMap(({ message: { id, body, userId } }) =>
+      mergeMap(({ message: { id, body, userId } }) =>
         this.chatService.sendMessage({ body, userId }).pipe(
           map(message =>
             ChatActions.sendMessageSuccess({
@@ -49,7 +49,8 @@ export class ChatEffects {
 
   messagesEvent$ = createEffect(() => {
     return this.chatService.messageEvents$.pipe(
-      map(messages => ChatActions.addMessages({ messages }))
+      bufferTime(250),
+      map(messages => ChatActions.addMessages({ messages: messages.flat() }))
     );
   });
 

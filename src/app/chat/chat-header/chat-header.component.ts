@@ -1,4 +1,9 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  Component,
+  OnDestroy,
+  OnInit,
+} from '@angular/core';
 import { FormBuilder, Validators } from '@angular/forms';
 import { Store } from '@ngrx/store';
 import { Observable, Subject, takeUntil } from 'rxjs';
@@ -9,6 +14,7 @@ import { selectUsername } from 'src/app/store/login/login.selectors';
   selector: 'app-chat-header',
   templateUrl: './chat-header.component.html',
   styleUrls: ['./chat-header.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class ChatHeaderComponent implements OnInit, OnDestroy {
   private onDestroy$ = new Subject<void>();

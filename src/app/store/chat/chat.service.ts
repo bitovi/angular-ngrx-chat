@@ -1,6 +1,16 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { delay, filter, map, Observable, of, Subject } from 'rxjs';
+import {
+  delay,
+  filter,
+  map,
+  Observable,
+  of,
+  Subject,
+  interval,
+  tap,
+  take,
+} from 'rxjs';
 import {
   Message,
   WebSocketMessageEvent,
@@ -30,17 +40,34 @@ const isUserLeftEvent = (
   return event.type === WebSocketEvents.USER_LEFT;
 };
 
-const usersMock = [
-  { id: crypto.randomUUID(), name: 'MockedUser1' },
-  { id: crypto.randomUUID(), name: 'MockedUser2' },
-  { id: crypto.randomUUID(), name: 'MockedUser3' },
-];
+const usersMock: User[] = [];
+for (let i = 0; i < 10000; i++) {
+  usersMock.push({ id: `MockedUser${i}`, name: `MockedUser${i}` });
+}
+
+const getRandomMessageBody = (len: number) => {
+  const chars = [...new Array(5).fill('a'), ' '];
+
+  const getChar = () => {
+    const index = Math.floor(chars.length * Math.random());
+
+    return chars[index];
+  };
+
+  let sentence = '';
+
+  for (let i = 0; i < len; i++) {
+    sentence += getChar();
+  }
+
+  return sentence;
+};
 
 const createRandomMessage = (userId: string): Message => {
   return {
     userId,
-    id: crypto.randomUUID(),
-    body: `Hello!`,
+    id: userId,
+    body: getRandomMessageBody(Math.random() * 300) ?? `Hello!`,
     time: new Date().getTime(),
   };
 };
@@ -74,47 +101,53 @@ export class ChatService {
 
   constructor(private http: HttpClient) {
     // to-do: remove when backend sends mocked data
-    usersMock.forEach((user, index) => {
-      // users join every second
-      setTimeout(() => {
-        this.webSocketEvents$.next(
-          new MessageEvent('message', {
-            data: {
-              type: WebSocketEvents.USER_JOINED,
-              data: user,
-            },
-          })
-        );
-      }, (index + 1) * 1000);
 
-      // users send message every 3 seconds
-      setTimeout(
-        () =>
-          this.webSocketEvents$.next(
-            new MessageEvent('message', {
-              data: {
-                type: WebSocketEvents.MESSAGE,
-                data: [createRandomMessage(user.id)],
-              },
-            })
-          ),
-        (index + 1) * 3000
-      );
+    interval(25)
+      .pipe(
+        take(usersMock.length),
+        tap(i => {
+          const user = usersMock[i];
 
-      // users leave every 10 seconds
-      setTimeout(
-        () =>
-          this.webSocketEvents$.next(
-            new MessageEvent('message', {
-              data: {
-                type: WebSocketEvents.USER_LEFT,
-                data: user.id,
-              },
-            })
-          ),
-        (index + 1) * 10000
-      );
-    });
+          // user joins
+          setTimeout(() =>
+            this.webSocketEvents$.next(
+              new MessageEvent('message', {
+                data: {
+                  type: WebSocketEvents.USER_JOINED,
+                  data: user,
+                },
+              })
+            )
+          );
+
+          // user sends message
+          setTimeout(() =>
+            this.webSocketEvents$.next(
+              new MessageEvent('message', {
+                data: {
+                  type: WebSocketEvents.MESSAGE,
+                  data: [createRandomMessage(user.id)],
+                },
+              })
+            )
+          );
+
+          // user leaves after 10 seconds
+          setTimeout(
+            () =>
+              this.webSocketEvents$.next(
+                new MessageEvent('message', {
+                  data: {
+                    type: WebSocketEvents.USER_LEFT,
+                    data: user.id,
+                  },
+                })
+              ),
+            10000
+          );
+        })
+      )
+      .subscribe();
   }
 
   // simulating an api call that returns created message with real id and time

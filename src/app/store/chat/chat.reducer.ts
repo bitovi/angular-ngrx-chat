@@ -9,7 +9,7 @@ export interface ChatState {
 }
 
 function sortByTime(a: Message, b: Message): 1 | -1 {
-  return a.time < b.time ? -1 : 1;
+  return a.time > b.time ? -1 : 1; // reversed to pin scroll at bottom with flex-direction: column-reverse
 }
 
 function sortByName(a: User, b: User): number {

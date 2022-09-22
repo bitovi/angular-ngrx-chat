@@ -1,20 +1,20 @@
 <div class="card">
   <app-chat-header></app-chat-header>
 
-  <div *ngIf="userData$ | async as authUser" class="message-wrapper">
-    <ng-container *ngFor="let message of messages$ | async">
+  <div *ngIf="userData$ | async as authUser" class="message-wrapper" #scroll>
+    <ng-container *ngFor="let message of messages$ | async; trackBy: trackByFn">
       <app-chat-message
         *ngIf="{
           connectedIsSender: message.userId === authUser.userId,
           user: message.userId | userById | async
-        } as messageExtraInfos"
+        } as messageData"
         [message]="message"
-        [connectedUserIsSender]="messageExtraInfos.connectedIsSender"
-        [userStatus]="messageExtraInfos.user?.status"
+        [connectedUserIsSender]="messageData.connectedIsSender"
+        [userStatus]="messageData.user?.status"
         [userName]="
-          messageExtraInfos.connectedIsSender
+          messageData.connectedIsSender
             ? authUser.username
-            : messageExtraInfos.user?.name
+            : messageData.user?.name
         ">
       </app-chat-message>
     </ng-container>
