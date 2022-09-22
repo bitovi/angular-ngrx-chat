@@ -10,8 +10,8 @@ import { selectUserId } from '../login/login.selectors';
 export class ChatEffects {
   readonly userId$ = this.store.select(selectUserId);
 
-  addPendingMessageOnSendMessage$ = createEffect(() =>
-    this.actions$.pipe(
+  addPendingMessageOnSendMessage$ = createEffect(() => {
+    return this.actions$.pipe(
       ofType(ChatActions.sendMessage),
       concatLatestFrom(() => [
         // creates a random ID and a time to show message as soon as user sends it, even though it is pending
@@ -28,11 +28,11 @@ export class ChatEffects {
           },
         })
       )
-    )
-  );
+    );
+  });
 
-  sendMessage$ = createEffect(() =>
-    this.actions$.pipe(
+  sendMessage$ = createEffect(() => {
+    return this.actions$.pipe(
       ofType(ChatActions.addPendingMessage),
       concatMap(({ message: { id, body, userId } }) =>
         this.chatService.sendMessage({ body, userId }).pipe(
@@ -44,26 +44,26 @@ export class ChatEffects {
           )
         )
       )
-    )
-  );
+    );
+  });
 
-  messagesEvent$ = createEffect(() =>
-    this.chatService.messageEvents$.pipe(
+  messagesEvent$ = createEffect(() => {
+    return this.chatService.messageEvents$.pipe(
       map(messages => ChatActions.addMessages({ messages }))
-    )
-  );
+    );
+  });
 
-  userJoinedEvent$ = createEffect(() =>
-    this.chatService.userJoinedEvents$.pipe(
+  userJoinedEvent$ = createEffect(() => {
+    return this.chatService.userJoinedEvents$.pipe(
       map(user => ChatActions.addUser({ user }))
-    )
-  );
+    );
+  });
 
-  userLeftEvent$ = createEffect(() =>
-    this.chatService.userLeftEvents$.pipe(
+  userLeftEvent$ = createEffect(() => {
+    return this.chatService.userLeftEvents$.pipe(
       map(userId => ChatActions.setUserOffline({ userId }))
-    )
-  );
+    );
+  });
 
   constructor(
     private actions$: Actions,

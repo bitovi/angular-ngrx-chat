@@ -1,14 +1,5 @@
 import { Injectable } from '@angular/core';
-import {
-  ActivatedRouteSnapshot,
-  CanActivate,
-  CanLoad,
-  Route,
-  Router,
-  RouterStateSnapshot,
-  UrlSegment,
-  UrlTree,
-} from '@angular/router';
+import { CanActivate, CanLoad, Router, UrlTree } from '@angular/router';
 import { Store } from '@ngrx/store';
 import { map, Observable } from 'rxjs';
 import { selectToken } from '../store/login/login.selectors';
@@ -28,17 +19,11 @@ export class AuthenticationGuard implements CanActivate, CanLoad {
 
   constructor(private store: Store, private router: Router) {}
 
-  canActivate(
-    route: ActivatedRouteSnapshot,
-    state: RouterStateSnapshot
-  ): Observable<UrlTree | boolean> {
+  canActivate(): Observable<UrlTree | boolean> {
     return this.guard$;
   }
 
-  canLoad(
-    route: Route,
-    segments: UrlSegment[]
-  ):
+  canLoad():
     | boolean
     | UrlTree
     | Observable<boolean | UrlTree>

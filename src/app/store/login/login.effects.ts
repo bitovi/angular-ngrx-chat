@@ -8,8 +8,8 @@ import { LoginService } from './login.service';
 
 @Injectable()
 export class LoginEffects {
-  login$ = createEffect(() =>
-    this.actions$.pipe(
+  login$ = createEffect(() => {
+    return this.actions$.pipe(
       ofType(LoginActions.login),
       exhaustMap(({ username, password }) =>
         this.loginService.login({ username, password }).pipe(
@@ -25,20 +25,21 @@ export class LoginEffects {
           )
         )
       )
-    )
-  );
+    );
+  });
 
   loginSuccess$ = createEffect(
-    () =>
-      this.actions$.pipe(
+    () => {
+      return this.actions$.pipe(
         ofType(LoginActions.loginSuccess),
         switchMap(() => this.router.navigate(['chat']))
-      ),
+      );
+    },
     { dispatch: false }
   );
 
-  changeUsername$ = createEffect(() =>
-    this.actions$.pipe(
+  changeUsername$ = createEffect(() => {
+    return this.actions$.pipe(
       ofType(LoginActions.usernameChange),
       exhaustMap(({ username }) =>
         this.loginService.changeUsername(username).pipe(
@@ -52,8 +53,8 @@ export class LoginEffects {
           )
         )
       )
-    )
-  );
+    );
+  });
 
   constructor(
     private actions$: Actions,
