@@ -9,7 +9,7 @@ import { Observable, of, throwError } from 'rxjs';
 
 import * as LoginActions from './login.actions';
 import { LoginEffects } from './login.effects';
-import { LoginService } from './login.service';
+import { LoginService } from '../../services/login.service';
 
 @Component({
   selector: 'app-mock',
