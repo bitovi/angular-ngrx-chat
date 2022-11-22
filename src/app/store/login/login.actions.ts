@@ -17,16 +17,9 @@ export const loginFailure = createAction(
 
 export const logout = createAction('[Login] Logout');
 
-export const usernameChange = createAction(
-  '[Chat Page] Username Change',
-  props<{ username: string }>()
-);
+export const logoutSuccess = createAction('[Login API] Logout Success');
 
-export const usernameChangeSuccess = createAction(
-  '[Login API] Username Change Success'
-);
-
-export const usernameChangeFailure = createAction(
-  '[Login API] Username Change Failure',
+export const logoutFailure = createAction(
+  '[Login API] Logout Failure',
   props<{ errorMsg: string }>()
 );

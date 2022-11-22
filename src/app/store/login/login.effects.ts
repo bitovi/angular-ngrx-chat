@@ -32,21 +32,21 @@ export class LoginEffects {
     () => {
       return this.actions$.pipe(
         ofType(LoginActions.loginSuccess),
-        switchMap(() => this.router.navigate(['chat']))
+        switchMap(() => this.router.navigate(['dashboard']))
       );
     },
     { dispatch: false }
   );
 
-  changeUsername$ = createEffect(() => {
+  logout$ = createEffect(() => {
     return this.actions$.pipe(
-      ofType(LoginActions.usernameChange),
-      exhaustMap(({ username }) =>
-        this.loginService.changeUsername(username).pipe(
-          map(() => LoginActions.usernameChangeSuccess()),
+      ofType(LoginActions.logout),
+      exhaustMap(() =>
+        this.loginService.logout().pipe(
+          map(() => LoginActions.logoutSuccess()),
           catchError((error: unknown) =>
             of(
-              LoginActions.usernameChangeFailure({
+              LoginActions.logoutFailure({
                 errorMsg: this.getErrorMessage(error),
               })
             )
@@ -55,6 +55,16 @@ export class LoginEffects {
       )
     );
   });
+
+  logoutSuccess$ = createEffect(
+    () => {
+      return this.actions$.pipe(
+        ofType(LoginActions.logoutSuccess),
+        switchMap(() => this.router.navigate(['']))
+      );
+    },
+    { dispatch: false }
+  );
 
   constructor(
     private actions$: Actions,

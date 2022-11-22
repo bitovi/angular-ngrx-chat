@@ -14,32 +14,7 @@ export const loginReducer = createReducer(
       token,
     })
   ),
-  on(LoginActions.logout, (): LoginState => initialState),
-
-  // username change reducer
-  on(
-    LoginActions.usernameChange,
-    (state, { username }): LoginState => ({
-      ...state,
-      oldUsername: state.username,
-      username,
-    })
-  ),
-  on(
-    LoginActions.usernameChangeSuccess,
-    (state): LoginState => ({
-      ...state,
-      oldUsername: null,
-    })
-  ),
-  on(
-    LoginActions.usernameChangeFailure,
-    (state): LoginState => ({
-      ...state,
-      username: state.oldUsername,
-      oldUsername: null,
-    })
-  )
+  on(LoginActions.logoutSuccess, (): LoginState => initialState)
 );
 
 export function reducer(state: LoginState | undefined, action: Action) {
