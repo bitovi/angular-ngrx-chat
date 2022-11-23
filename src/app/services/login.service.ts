@@ -43,7 +43,7 @@ export class LoginService {
           throw new Error('username length must be at least 3 characters long');
         }
 
-        if (!/^[a-z0-9-_]+$/.test(username)) {
+        if (!/^[A-Za-z0-9-_]+$/.test(username)) {
           throw new Error(
             'username must only include alphanumeric, hyphens, or underscores'
           );
