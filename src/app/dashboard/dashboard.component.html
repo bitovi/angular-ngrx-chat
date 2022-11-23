@@ -2,6 +2,17 @@
   <div class="header-bar__title">NgrxChat</div>
   <button type="button" (click)="logout()">Logout</button>
 </header>
-<p>dashboard works!</p>
 
-
+<div class="layout">
+  <section class="card">
+    <h1>User Information</h1>
+    <dl>
+      <dt>User Name</dt>
+      <!-- Display username -->
+      <dd [textContent]="username$ | async"></dd><br>
+      <dt>User ID</dt>
+      <!-- Display user ID -->
+      <dd [textContent]="userId$ | async"></dd>
+    </dl>
+  </section>
+</div>
