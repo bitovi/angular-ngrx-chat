@@ -1,34 +1,42 @@
 @use '../../styles/variables' as variables;
 
+$header-height: 48px;
+
 .header-bar {
   width: 100vw;
-  height: 48px;
+  height: $header-height;
   box-sizing: border-box;
   padding: 8px 16px;
   color: #fff;
   background-color: variables.$secondary-bg-color;
   box-shadow: 0 6px 10px rgb(0 0 0 / 16%);
+  position: fixed;
+  top: 0;
+  left: 0;
   display: flex;
   &__title {
     color: variables.$primary-color;
-    line-height: 48px - 16px;
+    line-height: $header-height - 16px;
     font-weight: 600;
     flex: 1;
   }
   button {
-    height: 48px - 16px;
+    height: $header-height - 16px;
   }
 }
 
 .layout {
-  height: 100%;
   display: flex;
   align-items: flex-start;
   justify-content: center;
+  height: 100%;
+  overflow-y: auto;
+  padding-top: $header-height;
 
-  .card {
+  .card--dashboard {
     margin-top: 2rem;
     padding: 2rem 4rem;
+    justify-content: flex-start;
   }
 
   dt {
