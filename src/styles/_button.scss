@@ -1,7 +1,9 @@
+@use 'variables' as variables;
+
 button {
   height: 50px;
   padding-inline: 0.5rem;
-  background: $primary-color;
+  background: variables.$primary-color;
   color: white;
   font-weight: 800;
   font-size: 1rem;

@@ -1,3 +1,5 @@
+@use 'variables' as variables;
+
 form {
   label {
     font-weight: 700;
@@ -15,7 +17,7 @@ form {
   }
 
   input.ng-invalid.ng-touched {
-    border: 1px solid red;
+    border: 1px solid variables.$error-color;
   }
 
   input:focus-visible {
@@ -24,5 +26,5 @@ form {
 }
 
 .error-message {
-  color: red;
+  color: variables.$error-color;
 }
