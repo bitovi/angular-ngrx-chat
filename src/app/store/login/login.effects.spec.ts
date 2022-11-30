@@ -6,6 +6,14 @@ import { Action } from '@ngrx/store';
 import { provideMockStore } from '@ngrx/store/testing';
 import * as LoginActions from './login.actions';
 import { LoginService } from '../../services/login.service';
+import { Router } from '@angular/router';
+import { RouterTestingModule } from '@angular/router/testing';
+import { Component } from '@angular/core';
+
+@Component({
+  selector: 'app-mock',
+})
+class MockComponent {}
 
 const mockLoginService = {
   login: (credentials: { username: string; password: string }) => {
@@ -20,10 +28,16 @@ describe('LoginEffects', () => {
   let effects: LoginEffects;
 
   let loginService: LoginService;
+  let router: Router;
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      imports: [],
+      imports: [
+        RouterTestingModule.withRoutes([
+          { path: '', component: MockComponent },
+          { path: 'dashboard', component: MockComponent },
+        ]),
+      ],
       providers: [
         LoginEffects,
         provideMockActions(() => actions$),
@@ -37,6 +51,7 @@ describe('LoginEffects', () => {
 
     effects = TestBed.inject(LoginEffects);
     loginService = TestBed.inject(LoginService);
+    router = TestBed.inject(Router);
   });
 
   describe('login$', () => {
@@ -92,6 +107,27 @@ describe('LoginEffects', () => {
     });
   });
 
+  describe('loginSuccess$', () => {
+    beforeEach(() => {
+      actions$ = of(
+        LoginActions.loginSuccess({
+          userId: 'some-user-id',
+          username: 'some-username',
+          token: 'some-token',
+        })
+      );
+    });
+
+    it('should navigate to dashboard', done => {
+      const spy = spyOn(router, 'navigate').and.callThrough();
+
+      effects.loginSuccess$.subscribe(() => {
+        expect(spy).toHaveBeenCalledOnceWith(['dashboard']);
+        done();
+      });
+    });
+  });
+
   describe('logout$', () => {
     beforeEach(() => {
       actions$ = of(LoginActions.logout());
@@ -118,6 +154,21 @@ describe('LoginEffects', () => {
           })
         );
 
+        done();
+      });
+    });
+  });
+
+  describe('logoutSuccess$', () => {
+    beforeEach(() => {
+      actions$ = of(LoginActions.logoutSuccess());
+    });
+
+    it('should navigate to login', done => {
+      const spy = spyOn(router, 'navigate').and.callThrough();
+
+      effects.logoutSuccess$.subscribe(() => {
+        expect(spy).toHaveBeenCalledOnceWith(['']);
         done();
       });
     });
