@@ -1,21 +1,56 @@
 import * as fromLogin from './login.reducer';
-import { selectLoginState } from './login.selectors';
+import {
+  selectLoginState,
+  selectToken,
+  selectUserId,
+  selectUsername,
+} from './login.selectors';
 
 describe('Login Selectors', () => {
-  it('should select the feature state', () => {
-    const result = selectLoginState({
+  let state: fromLogin.LoginPartialState;
+
+  beforeEach(() => {
+    state = {
       [fromLogin.loginFeatureKey]: {
         ...fromLogin.initialState,
         userId: 'some-user-id',
         username: 'some-username',
         token: 'some-token',
       },
-    });
+    };
+  });
+
+  it('should select the feature state', () => {
+    const result = selectLoginState(state);
 
     expect(result).toEqual({
       userId: 'some-user-id',
       username: 'some-username',
       token: 'some-token',
+    });
+  });
+
+  describe('selectUserId', () => {
+    it('should return userId from login state', () => {
+      const result = selectUserId(state);
+
+      expect(result).toBe('some-user-id');
+    });
+  });
+
+  describe('selectUsername', () => {
+    it('should return username from login state', () => {
+      const result = selectUsername(state);
+
+      expect(result).toBe('some-username');
+    });
+  });
+
+  describe('selectToken', () => {
+    it('should return token from login state', () => {
+      const result = selectToken(state);
+
+      expect(result).toBe('some-token');
     });
   });
 });
