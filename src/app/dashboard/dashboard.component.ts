@@ -9,11 +9,11 @@ import { of } from 'rxjs';
 export class DashboardComponent {
   // Select username from store
   // TODO: Replace `of('TODO')` with selectUsername selector
-  readonly username$ = of('TODO'); //this.store.select(selectUsername);
+  readonly username$ = of('TODO');
 
   // Select user ID from store
   // TODO: Replace `of('TODO')` with selectUserId selector
-  readonly userId$ = of('TODO'); //this.store.select(selectUserId);
+  readonly userId$ = of('TODO');
 
   logout(): void {
     // TODO: Dispatch LoginActions.logout action
