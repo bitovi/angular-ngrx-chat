@@ -1,6 +1,5 @@
 import { Injectable } from '@angular/core';
 import { catchError, map, Observable, tap, timer } from 'rxjs';
-import { LoginResponse } from '../store/login/login.model';
 import { v4 } from 'uuid';
 
 /**
@@ -9,6 +8,11 @@ import { v4 } from 'uuid';
 export interface Credentials {
   username: string;
   password: string;
+}
+
+export interface LoginResponse {
+  userId: string;
+  token: string;
 }
 
 /**
