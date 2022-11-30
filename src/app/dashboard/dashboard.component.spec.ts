@@ -12,7 +12,18 @@ describe('DashboardComponent', () => {
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       declarations: [DashboardComponent],
-      providers: [provideMockStore({})],
+      providers: [
+        MockStore,
+        provideMockStore({
+          initialState: {
+            [fromLogin.loginFeatureKey]: {
+              userId: 'some-user-id',
+              username: 'some-username',
+              token: 'some-token',
+            },
+          },
+        }),
+      ],
     }).compileComponents();
 
     fixture = TestBed.createComponent(DashboardComponent);
@@ -36,14 +47,20 @@ describe('DashboardComponent', () => {
   });
 
   describe('username$', () => {
-    it('should get username from login state', () => {
-      // TODO: Verify username comes from login state
+    it('should get username from login state', done => {
+      component.username$.subscribe(username => {
+        expect(username).toBe('some-username');
+        done();
+      });
     });
   });
 
   describe('userId$', () => {
-    it('should get userId from login state', () => {
-      // TODO: Verify userId comes from login state
+    it('should get userId from login state', done => {
+      component.userId$.subscribe(userId => {
+        expect(userId).toBe('some-user-id');
+        done();
+      });
     });
   });
 });
