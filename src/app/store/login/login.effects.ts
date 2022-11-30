@@ -1,11 +1,56 @@
 import { Injectable } from '@angular/core';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
-import { catchError, map, concatMap } from 'rxjs/operators';
-import { Observable, EMPTY, of } from 'rxjs';
+import { catchError, map, switchMap } from 'rxjs/operators';
+import { of } from 'rxjs';
 import * as LoginActions from './login.actions';
-
+import { LoginService } from 'src/app/services/login.service';
 
 @Injectable()
 export class LoginEffects {
-  constructor(private actions$: Actions) {}
+  login$ = createEffect(() => {
+    return this.actions$.pipe(
+      ofType(LoginActions.login),
+      switchMap(({ username, password }) =>
+        this.loginService.login({ username, password }).pipe(
+          map(({ userId, token }) =>
+            LoginActions.loginSuccess({ userId, username, token })
+          ),
+          catchError((error: unknown) =>
+            of(
+              LoginActions.loginFailure({
+                errorMsg: this.getErrorMessage(error),
+              })
+            )
+          )
+        )
+      )
+    );
+  });
+
+  logout$ = createEffect(() => {
+    return this.actions$.pipe(
+      ofType(LoginActions.logout),
+      switchMap(() =>
+        this.loginService.logout().pipe(
+          map(() => LoginActions.logoutSuccess()),
+          catchError((error: unknown) =>
+            of(
+              LoginActions.logoutFailure({
+                errorMsg: this.getErrorMessage(error),
+              })
+            )
+          )
+        )
+      )
+    );
+  });
+
+  constructor(private actions$: Actions, private loginService: LoginService) {}
+
+  private getErrorMessage(error: unknown): string {
+    if (error instanceof Error) {
+      return error.message;
+    }
+    return String(error);
+  }
 }
