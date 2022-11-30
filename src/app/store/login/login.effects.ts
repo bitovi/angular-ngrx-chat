@@ -4,6 +4,7 @@ import { catchError, map, switchMap } from 'rxjs/operators';
 import { of } from 'rxjs';
 import * as LoginActions from './login.actions';
 import { LoginService } from 'src/app/services/login.service';
+import { Router } from '@angular/router';
 
 @Injectable()
 export class LoginEffects {
@@ -27,6 +28,16 @@ export class LoginEffects {
     );
   });
 
+  loginSuccess$ = createEffect(
+    () => {
+      return this.actions$.pipe(
+        ofType(LoginActions.loginSuccess),
+        switchMap(() => this.router.navigate(['dashboard']))
+      );
+    },
+    { dispatch: false }
+  );
+
   logout$ = createEffect(() => {
     return this.actions$.pipe(
       ofType(LoginActions.logout),
@@ -45,7 +56,21 @@ export class LoginEffects {
     );
   });
 
-  constructor(private actions$: Actions, private loginService: LoginService) {}
+  logoutSuccess$ = createEffect(
+    () => {
+      return this.actions$.pipe(
+        ofType(LoginActions.logoutSuccess),
+        switchMap(() => this.router.navigate(['']))
+      );
+    },
+    { dispatch: false }
+  );
+
+  constructor(
+    private actions$: Actions,
+    private loginService: LoginService,
+    private router: Router
+  ) {}
 
   private getErrorMessage(error: unknown): string {
     if (error instanceof Error) {
