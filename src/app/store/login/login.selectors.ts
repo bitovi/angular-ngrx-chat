@@ -4,3 +4,18 @@ import * as fromLogin from './login.reducer';
 export const selectLoginState = createFeatureSelector<fromLogin.State>(
   fromLogin.loginFeatureKey
 );
+
+export const selectUserId = createSelector(
+  selectLoginState,
+  state => state.userId
+);
+
+export const selectUsername = createSelector(
+  selectLoginState,
+  state => state.username
+);
+
+export const selectToken = createSelector(
+  selectLoginState,
+  state => state.token
+);
