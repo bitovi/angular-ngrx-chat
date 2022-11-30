@@ -12,10 +12,5 @@ export const initialState: State = {
 };
 
 export const reducer = createReducer(
-  initialState,
-
-  on(LoginActions.loadLogins, state => state),
-  on(LoginActions.loadLoginsSuccess, (state, action) => state),
-  on(LoginActions.loadLoginsFailure, (state, action) => state),
-
+  initialState
 );
