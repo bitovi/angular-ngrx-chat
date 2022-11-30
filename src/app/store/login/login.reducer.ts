@@ -7,6 +7,10 @@ export interface State {
 
 }
 
+export interface LoginPartialState {
+  [loginFeatureKey]: State;
+}
+
 export const initialState: State = {
 
 };
