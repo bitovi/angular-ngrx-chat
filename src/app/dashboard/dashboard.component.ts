@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
-import { of } from 'rxjs';
 import { Store } from '@ngrx/store';
 import * as LoginActions from '../store/login/login.actions';
+import * as LoginSelectors from '../store/login/login.selectors';
 
 @Component({
   selector: 'app-dashboard',
@@ -10,12 +10,10 @@ import * as LoginActions from '../store/login/login.actions';
 })
 export class DashboardComponent {
   // Select username from store
-  // TODO: Replace `of('TODO')` with selectUsername selector
-  readonly username$ = of('TODO');
+  readonly username$ = this.store.select(LoginSelectors.selectUsername);
 
   // Select user ID from store
-  // TODO: Replace `of('TODO')` with selectUserId selector
-  readonly userId$ = of('TODO');
+  readonly userId$ = this.store.select(LoginSelectors.selectUserId);
 
   constructor(private store: Store) {}
 
