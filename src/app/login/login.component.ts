@@ -1,7 +1,5 @@
 import { Component } from '@angular/core';
 import { FormBuilder, Validators } from '@angular/forms';
-import { Store } from '@ngrx/store';
-import * as LoginActions from '../store/login/login.actions';
 
 @Component({
   selector: 'app-login',
@@ -14,7 +12,7 @@ export class LoginComponent {
     password: ['', [Validators.required]],
   });
 
-  constructor(private fb: FormBuilder, private store: Store) {}
+  constructor(private fb: FormBuilder) {}
 
   submit(): void {
     this.form.markAllAsTouched();
@@ -23,11 +21,5 @@ export class LoginComponent {
     }
 
     // TODO: Dispatch LoginActions.login action
-    this.store.dispatch(
-      LoginActions.login({
-        username: this.form.controls.username.value,
-        password: this.form.controls.password.value,
-      })
-    );
   }
 }

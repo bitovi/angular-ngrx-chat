@@ -1,26 +1,21 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { FormBuilder, ReactiveFormsModule } from '@angular/forms';
-import { MockStore, provideMockStore } from '@ngrx/store/testing';
-import { LoginPartialState } from '../store/login/login.model';
-import * as LoginActions from '../store/login/login.actions';
 import { LoginComponent } from './login.component';
 
 describe('LoginComponent', () => {
   let component: LoginComponent;
   let fixture: ComponentFixture<LoginComponent>;
-  let store: MockStore<LoginPartialState>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       declarations: [LoginComponent],
-      providers: [provideMockStore({}), FormBuilder],
+      providers: [FormBuilder],
       imports: [ReactiveFormsModule],
     }).compileComponents();
 
     fixture = TestBed.createComponent(LoginComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
-    store = TestBed.inject(MockStore);
   });
 
   it('should create', () => {
@@ -51,12 +46,10 @@ describe('LoginComponent', () => {
 
       it('should dispatch LoginActions.login', () => {
         // TODO: Spy on dispatching action
-        const spy = spyOn(store, 'dispatch');
 
         component.submit();
 
         // TODO: Verify that LoginActions.login action was dispatched
-        expect(spy).toHaveBeenCalledOnceWith(LoginActions.login(mock));
       });
     });
 
@@ -77,12 +70,10 @@ describe('LoginComponent', () => {
 
       it('should NOT dispatch LoginActions.login', () => {
         // TODO: Spy on dispatching action
-        const spy = spyOn(store, 'dispatch');
 
         component.submit();
 
         // TODO: Verify that no action was dispatched
-        expect(spy).not.toHaveBeenCalled();
       });
     });
   });
