@@ -1,19 +1,24 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { DashboardComponent } from './dashboard.component';
+import { MockStore, provideMockStore } from '@ngrx/store/testing';
+import * as LoginActions from '../store/login/login.actions';
+import * as fromLogin from '../store/login/login.reducer';
 
 describe('DashboardComponent', () => {
   let component: DashboardComponent;
   let fixture: ComponentFixture<DashboardComponent>;
+  let store: MockStore<fromLogin.LoginPartialState>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       declarations: [DashboardComponent],
-      providers: [],
+      providers: [provideMockStore({})],
     }).compileComponents();
 
     fixture = TestBed.createComponent(DashboardComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
+    store = TestBed.inject(MockStore);
   });
 
   it('should create', () => {
@@ -22,11 +27,11 @@ describe('DashboardComponent', () => {
 
   describe('logout()', () => {
     it('should dispatch logout action', () => {
-      // TODO: Spy on dispatching action
+      const spy = spyOn(store, 'dispatch');
 
       component.logout();
 
-      // TODO: Verify that LoginActions.logout action was dispatched
+      expect(spy).toHaveBeenCalledOnceWith(LoginActions.logout());
     });
   });
 
