@@ -20,7 +20,7 @@ describe('Login Selectors', () => {
   });
 
   describe('selectUserId', () => {
-    it('should return userId from state', () => {
+    it('should return userId from login state', () => {
       const result = LoginSelectors.selectUserId(state);
 
       expect(result).toBe('some-user-id');
@@ -28,7 +28,7 @@ describe('Login Selectors', () => {
   });
 
   describe('selectUsername', () => {
-    it('should return username from state', () => {
+    it('should return username from login state', () => {
       const result = LoginSelectors.selectUsername(state);
 
       expect(result).toBe('some-username');
@@ -36,7 +36,7 @@ describe('Login Selectors', () => {
   });
 
   describe('selectToken', () => {
-    it('should return token from state', () => {
+    it('should return token from login state', () => {
       const result = LoginSelectors.selectToken(state);
 
       expect(result).toBe('some-token');

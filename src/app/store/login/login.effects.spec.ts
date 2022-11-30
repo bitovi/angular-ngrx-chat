@@ -65,9 +65,7 @@ describe('LoginEffects', () => {
       );
     });
 
-    it('should get user credentials on login success', done => {
-      //   expect.assertions(2);
-
+    it('should get dispatch LoginActions.loginSuccess on api success', done => {
       const spy = spyOn(loginService, 'login').and.callThrough();
 
       effects.login$.subscribe(action => {
@@ -88,9 +86,7 @@ describe('LoginEffects', () => {
       });
     });
 
-    it('should get error response on login error', done => {
-      //   expect.assertions(2);
-
+    it('should get dispatch LoginActions.loginFailure on api error', done => {
       const spy = spyOn(loginService, 'login').and.returnValue(
         throwError(() => new Error('some error message'))
       );
@@ -124,13 +120,10 @@ describe('LoginEffects', () => {
     });
 
     it('should navigate to dashboard', done => {
-      // expect.assertions(1);
-
       const spy = spyOn(router, 'navigate').and.callThrough();
 
       effects.loginSuccess$.subscribe(() => {
         expect(spy).toHaveBeenCalledOnceWith(['dashboard']);
-
         done();
       });
     });
@@ -141,12 +134,42 @@ describe('LoginEffects', () => {
       actions$ = of(LoginActions.logout());
     });
 
-    it('should clear localStorage', done => {
-      // expect.assertions(2);
-
+    it('should get dispatch LoginActions.logoutSuccess on api success', done => {
       effects.logout$.subscribe(action => {
         expect(action).toEqual(LoginActions.logoutSuccess());
+        done();
+      });
+    });
 
+    it('should get dispatch LoginActions.logoutFailure on api error', done => {
+      const spy = spyOn(loginService, 'logout').and.returnValue(
+        throwError(() => new Error('some error message'))
+      );
+
+      effects.logout$.subscribe(action => {
+        expect(spy).toHaveBeenCalledOnceWith();
+
+        expect(action).toEqual(
+          LoginActions.logoutFailure({
+            errorMsg: 'some error message',
+          })
+        );
+
+        done();
+      });
+    });
+  });
+
+  describe('logoutSuccess$', () => {
+    beforeEach(() => {
+      actions$ = of(LoginActions.logoutSuccess());
+    });
+
+    it('should navigate to login', done => {
+      const spy = spyOn(router, 'navigate').and.callThrough();
+
+      effects.logoutSuccess$.subscribe(() => {
+        expect(spy).toHaveBeenCalledOnceWith(['']);
         done();
       });
     });

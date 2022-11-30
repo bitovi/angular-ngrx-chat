@@ -31,7 +31,7 @@ describe('Auth Reducer', () => {
   });
 
   describe('logoutSuccess action', () => {
-    it('should update the state in an immutable way', () => {
+    it('should reset LoginState to initialState', () => {
       const action = LoginActions.logoutSuccess();
 
       const state = reducer(
