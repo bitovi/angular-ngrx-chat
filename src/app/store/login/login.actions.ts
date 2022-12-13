@@ -15,7 +15,7 @@ export const loginFailure = createAction(
   props<{ errorMsg: string }>()
 );
 
-export const logout = createAction('[Login] Logout');
+export const logout = createAction('[Dashboard Page] Logout');
 
 export const logoutSuccess = createAction('[Login API] Logout Success');
 
