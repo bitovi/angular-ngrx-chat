@@ -32,7 +32,7 @@ export class LoginEffects {
     () => {
       return this.actions$.pipe(
         ofType(LoginActions.loginSuccess),
-        switchMap(() => this.router.navigate(['dashboard']))
+        exhaustMap(() => this.router.navigate(['dashboard']))
       );
     },
     { dispatch: false }
@@ -60,7 +60,7 @@ export class LoginEffects {
     () => {
       return this.actions$.pipe(
         ofType(LoginActions.logoutSuccess),
-        switchMap(() => this.router.navigate(['']))
+        exhaustMap(() => this.router.navigate(['']))
       );
     },
     { dispatch: false }
