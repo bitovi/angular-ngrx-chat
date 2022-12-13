@@ -14,7 +14,17 @@ import { LoginEffects } from './store/login/login.effects';
 
 @NgModule({
   declarations: [AppComponent],
-  imports: [BrowserModule, AppRoutingModule, HttpClientModule, LoginModule, StoreModule.forRoot(reducers, { metaReducers }), !environment.production ? StoreDevtoolsModule.instrument() : [], StoreModule.forFeature(fromLogin.loginFeatureKey, fromLogin.reducer), EffectsModule.forFeature([LoginEffects])],
+  imports: [
+    BrowserModule,
+    AppRoutingModule,
+    HttpClientModule,
+    LoginModule,
+    StoreModule.forRoot(reducers, { metaReducers }),
+    EffectsModule.forRoot([]),
+    !environment.production ? StoreDevtoolsModule.instrument() : [],
+    StoreModule.forFeature(fromLogin.loginFeatureKey, fromLogin.reducer),
+    EffectsModule.forFeature([LoginEffects]),
+  ],
   bootstrap: [AppComponent],
 })
 export class AppModule {}
