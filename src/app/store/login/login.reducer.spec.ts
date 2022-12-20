@@ -43,7 +43,10 @@ describe('Login Reducer', () => {
       );
 
       // Compare new state
-      expect(state).toBe(initialState);
+      expect(state).toEqual(initialState);
+
+      // Check for immutability
+      expect(state).not.toBe(initialState);
     });
   });
 
@@ -53,6 +56,7 @@ describe('Login Reducer', () => {
 
       const result = reducer(initialState, action);
 
+      // Shouldn't update state at all
       expect(result).toBe(initialState);
     });
   });
